@@ -1,4 +1,4 @@
-This is project is for calibrate the camera, before using it for PTV analysis.
+This project is for calibrating the camera, before using it for PTV analysis.
 The order of using the code is:
 
 1. take a video of the checkerboard with the camera to be calibrated.
