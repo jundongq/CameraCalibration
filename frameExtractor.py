@@ -1,7 +1,7 @@
 '''
 This program is used to extract frames from videos.
 
-Jundong Qiao, Univerisity at Buffalo, 09/15/2016
+Jundong Qiao, Univerisity at Buffalo, 09/15/2016. Updataed on 08/01/2017
 
 The version of modules:
 opencv 2.4.8
@@ -12,41 +12,56 @@ References:
 
 import cv2
 import os
+import sys
 
-# load the video
-vidcap = cv2.VideoCapture('ImgSamples/C0009.MP4')
-'''obtaining the video info'''
 
-if not vidcap.isOpened(): 
-    print '-----Could not open the input video!'
+def frameExtractor(videofile):
+  # Read video file
+  vidcap = cv2.VideoCapture(videofile)
 
-print '-----Converting the video into readable format......'
-os.system('ffmpeg -i ImgSamples/C0009.MP4 -c:v copy ImgSamples/C0009_Converted.mp4')
-print '-----Video convertion completed!'
-print '-----Loading the converted video......'
-vidcap = cv2.VideoCapture('ImgSamples/C0009_Converted.MP4')	
+  """
+  Obtaining the video info
+  """
+  if vidcap.isOpened():
+  	print "The imported file is readable."
+  	
+  else:
+  	print "could not open the input file"
+      
+  	print "converting MP4 file..."
+  	os.system('ffmpeg -i %s -c:v copy %s_Converted.mp4' %(videofile, videofile[:-4]))
+  	vidcap = cv2.VideoCapture('%s_Converted.MP4' % videofile[:-4])	
 
-length = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
-width  = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
-height = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
-fps    = vidcap.get(cv2.cv.CV_CAP_PROP_FPS)
+  length = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
+  width  = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
+  height = int(vidcap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+  fps    = vidcap.get(cv2.cv.CV_CAP_PROP_FPS)
 
-print '-----The fps of the file is: ', fps
+  print 'The fps of the file is: ', fps
 
-#success,image = vidcap.read()
-'''Reading the video and saving it into images'''
-#success = True
-count = 0
-while True:
+  """
+  Reading the video and saving it into images
+  """
+  data_dir = '%s' %videofile[:-4]
+  if not os.path.exists(data_dir):
+  	os.makedirs(data_dir)
+
   success,image = vidcap.read()
-  print 'Read a new frame: ', success
-  count += 1
-  # make a new directory to store the extracted frames from the video
-  dirname = 'ImgSamples/ResolvedRawImgs'
-  if not os.path.exists(dirname):
-  	os.mkdir(dirname)
-  
-  # save the undistorted image to the new diretory
-  cv2.imwrite(os.path.join(dirname,'RawImg_%05d.png' %count), image)
+  count = 0
+  success = True
+  while success:
+    success,image = vidcap.read()
+    print 'Read a new frame: ', success
+    print count
+    cv2.imwrite(os.path.join(data_dir, "%05d.png" % count), image)    # save frame as png file
+    count += 1
+
+#####################
+###### Running ######
+#####################
+if __name__ == "__main__":
+	print '~~~ Loading .MP4 file...'
+	videofile = sys.argv[1]
+	frameExtractor(videofile)
 
 print '-----Frame Extration Done!'
