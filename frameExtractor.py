@@ -3,6 +3,15 @@ import os
 import sys
 import time
 
+###
+usage:
+	python frameExtractory.py videofile sample_frequecy
+###
+
+
+
+
+
 def frameExtractor(videofile, sample_frequency):
 	# Read video file
 	vidcap = cv2.VideoCapture(videofile)
