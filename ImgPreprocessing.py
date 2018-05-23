@@ -7,8 +7,7 @@ import os
 import time
 
 """
-
-
+Usage: python ImgPreprocessing.py -v path-to-yourVideo -n path-to-yourSamplingFrequency -cp path-to-yourCamaraMatrix
 """
 
 def main(videofile, sample_frequency, camera_calibration):
