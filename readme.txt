@@ -8,4 +8,4 @@ The order of using the code is:
 
 ###
 5. After image distortion, use imgReflectionRemove.py to remove glares and to enhance image contrast.
-6. Im
+6. ImgPreprocessing.py integrate frame extraction, image undistortion and glare removal processes together.
